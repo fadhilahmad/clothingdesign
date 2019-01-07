@@ -60,13 +60,5 @@ Route::get('/posts/{id}/draft', 'PostsController@viewdraft');
 // route to send draft method
 Route::post('/draft/{id}', 'PostsController@confirmdraft');
 
-// route to send confirm design method
-Route::post('/posts/{id}', 'PostsController@confirmdesign');
-
-// route to send finish moulder method
-Route::post('/posts/{id}', 'PostsController@finishedmoulder');
-
-// route to send finished tailor method
-Route::post('/posts/{id}', 'PostsController@finishedtailor');
-
+Route::post('/posts/{id}', 'PostsController@manageaction');
 

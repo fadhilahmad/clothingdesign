@@ -103,65 +103,57 @@
     <?php
     }
     ?>
-    {{-- display confirm design button to designer if order status is drafted --}}
-    <?php 
-    if($post->status == 'Accepted'){
-    ?>
-        @can('isDesigner')
-        
-            {!!Form::open(['action' => ['PostsController@confirmdesign', $post->id], 'method' => 'POST'])!!}
-                {{Form::submit('Confirm Design', ['class' => 'btn btn-primary'])}}
-            {!!Form::close()!!}
 
-        @endcan
-    <?php
-    }
-    ?>
-    {{-- display mouldered button to moulder if order status is designed --}}
-    <?php 
-    if($post->status == 'Designed'){
-    ?>
-        @can('isMoulder')
-        
-            {!!Form::open(['action' => ['PostsController@finishedmoulder', $post->id], 'method' => 'POST'])!!}
-                {{Form::submit('Mouldered', ['class' => 'btn btn-primary'])}}
-            {!!Form::close()!!}
+    {!!Form::open(['action' => ['PostsController@manageaction', $post->id], 'method' => 'POST'])!!}
 
-        @endcan
-    <?php
-    }
-    ?>
-    {{-- display tailored button to tailor if order status is mouldered --}}
-    <?php 
-    if($post->status == 'Mouldered' || $post->status == 'Tailored'){
-    ?>
-        @can('isTailor')
+        {{-- display confirm design button to designer if order status is drafted --}}
+        <?php 
+        if($post->status == 'Accepted'){
+        ?>
+            @can('isDesigner')
+                <input type="submit" name="submitbutton" value="Designed" class="btn btn-primary">
+            @endcan
+        <?php
+        }
+        ?>
+        {{-- display mouldered button to moulder if order status is designed --}}
+        <?php 
+        if($post->status == 'Designed'){
+        ?>
+            @can('isMoulder')
+                <input type="submit" name="submitbutton" value="Mouldered" class="btn btn-primary">
+            @endcan
+        <?php
+        }
+        ?>
+        {{-- display tailored button to tailor if order status is mouldered --}}
+        <?php 
+        if($post->status == 'Mouldered' || $post->status == 'Tailored'){
+        ?>
+            @can('isTailor')
 
-            <?php 
-            if($post->status == 'Mouldered'){
-            ?>
-                {!!Form::open(['action' => ['PostsController@finishedtailor', $post->id], 'method' => 'POST'])!!}
-                    {{Form::submit('Tailored', ['class' => 'btn btn-primary'])}}
-                {!!Form::close()!!}
-            <?php
-            }else{
-            ?>
-                {!!Form::open(['action' => ['PostsController@finishedtailor', $post->id], 'method' => 'POST'])!!}
-                    {{Form::submit('Packaged', ['class' => 'btn btn-primary'])}}
-                {!!Form::close()!!}
-            <?php
-            }
-            ?>
-        @endcan
-    <?php
-    }
-    ?>
-    
+                <?php 
+                if($post->status == 'Mouldered'){
+                ?>
+                    <input type="submit" name="submitbutton" value="Tailored" class="btn btn-primary">
+                <?php
+                }else{
+                ?>
+                    <input type="submit" name="submitbutton" value="Packaged" class="btn btn-primary">
+                <?php
+                }
+                ?>
+            @endcan
+        <?php
+        }
+        ?>
+
+    {!!Form::close()!!}
     
     <hr>
     <small>Ordered on {{$post->created_at}} by {{$post->user->name}}</small>
     <hr>
-    {{-- use can() method from laravel to show view to different type of users --}} 
+
     @can('isAdmin')
         <a href="/posts/{{$post->id}}/edit" class="btn btn-outline-primary">Edit</a>
 

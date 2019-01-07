@@ -535,61 +535,66 @@ class PostsController extends Controller
         return redirect('/dashboard')->with('success', 'Response Sent');
     }
 
-    public function confirmdesign(Request $request, $id)
-    {
-        
-        // fetch data based on id from database
-        $post = Post::find($id);
+    public function manageaction(Request $request, $id){
 
-        
-        $post->status = 'Designed';
+        switch($request->submitbutton){
 
-        // save it
-        $post->save();
+            case 'Designed':
+                // fetch data based on id from database
+                $post = Post::find($id);
 
-        // redirect and set success message
-        return redirect('/posts')->with('success', 'Design Confirmed');
-    }
+                $post->status = 'Designed';
 
-    public function finishedmoulder(Request $request, $id)
-    {
-        
-        // fetch data based on id from database
-        $post = Post::find($id);
+                // save it
+                $post->save();
 
-        
-        $post->status = 'Mouldered';
+                // redirect and set success message
+                return redirect('/posts')->with('success', 'Design Confirmed'); 
 
-        // save it
-        $post->save();
+            break;
 
-        // redirect and set success message
-        return redirect('/posts')->with('success', 'Order Mouldered');
-    }
+            case 'Mouldered':
+                // fetch data based on id from database
+                $post = Post::find($id);
 
-    public function finishedtailor(Request $request, $id)
-    {
-        
-        // fetch data based on id from database
-        $post = Post::find($id);
-        $stat = Post::find($id)->status;
-        
-        if($stat == 'Mouldered'){
-            $post->status = 'Tailored';
-        }else if($stat == 'Tailored'){
-            $post->status = 'Packaged';
+                $post->status = 'Mouldered';
+
+                // save it
+                $post->save();
+
+                // redirect and set success message
+                return redirect('/posts')->with('success', 'Order Mouldered'); 
+
+            break;
+
+            case 'Tailored':
+                // fetch data based on id from database
+                $post = Post::find($id);
+
+                $post->status = 'Tailored';
+
+                // save it
+                $post->save();
+
+                return redirect('/posts')->with('success', 'Order Tailored');
+
+            break;
+
+            case 'Packaged':
+                // fetch data based on id from database
+                $post = Post::find($id);
+                
+                $post->status = 'Packaged';
+
+                // save it
+                $post->save();
+                
+                return redirect('/posts')->with('success', 'Order Packaged');
+                    
+            break;
+
         }
 
-        // save it
-        $post->save();
-
-        // redirect and set success message
-        if($stat == 'Mouldered'){
-            return redirect('/posts')->with('success', 'Order Tailored');
-        }else if($stat == 'Tailored'){
-            return redirect('/posts')->with('success', 'Order Packaged');
-        }
-        
     }
 
 }
